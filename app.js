@@ -26,10 +26,13 @@ const shortestPath = (edges, nodeA, NodeB) => {
         // if not keep push 2 new unvisited neighbor  vs add distance 
         for (let neighbor of graph[node]) {
             if (!visited.has(neighbor)) {
+                visited.add(neighbor)
                 queue.push([neighbor, distance + 1])
             }
         }
     }
+    // if no path connect or have been found return -1
+    return -1
 }
 
 const buildGraph = (edges) => {
