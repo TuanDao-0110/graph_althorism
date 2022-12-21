@@ -1,40 +1,45 @@
-const grid = [
-    ['W', 'L', 'W', 'W', 'W'],
-    ['W', 'L', 'W', 'W', 'W'],
-    ['W', 'W', 'W', 'L', 'W'],
-    ['W', 'W', 'L', 'L', 'W'],
-    ['L', 'W', 'W', 'L', 'L'],
-    ['L', 'L', 'W', 'W', 'W'],
-]// --> 3 island
-const miniIsLand = (grid) => {
-    const visited = new Set()
-    let miniSize = Infinity
-    for (let r = 0; r < grid.length; r++) {
-        for (let c = 0; c < grid[0].length; c++) {
-            const size = exploreSize(grid, r, c, visited)
-            if (size > 0 && miniSize > size) {
-                miniSize = size
-            }
+const undirectedPath = (edges, nodeA, nodeB) => {
+    const graph = buildGraph(edges)
+    return hasPath(graph, nodeA, nodeB,)
+}
+
+const buildGraph = (edges) => {
+    // create
+    const graph = {}
+    for (let edge of edges) {
+        const [a, b] = edge
+        if (!(a in graph)) {
+            graph[a] = []
+        }
+        graph[a].push(b)
+        if (!(b in graph)) {
+            graph[b] = []
+        }
+        graph[b].push(a)
+
+    }
+
+    return graph
+}
+let visited = []
+const hasPath = (graph, src, dst,) => {
+    if (src === dst) return true
+    if (visited.includes(src)) return false
+    visited.push(src)
+    for (let neigbor of graph[src]) {
+        if (hasPath(graph, neigbor, dst)) {
+            return true
         }
     }
-    return miniSize
+    return false
 }
-
-const exploreSize = (grid, r, c, visited) => {
-    const rowInBounds = 0 <= r && r < grid.length
-    const colInBounds = 0 <= c && c < grid[0].length
-    if (!rowInBounds || !colInBounds) return 0;
-    if (grid[r][c] === 'W') return 0;
-    const pos = r + ',' + c
-    if (visited.has(pos)) return 0
-    visited.add(pos)
-    let size = 1
-    size += exploreSize(grid, r - 1, c, visited)
-    size += exploreSize(grid, r + 1, c, visited)
-    size += exploreSize(grid, r, c - 1, visited)
-    size += exploreSize(grid, r, c + 1, visited)
-    return size
-}
-
-
-console.log(miniIsLand(grid))
+const edges = [
+    ['i', 'j'],
+    ['k', 'i'],
+    ['m', 'k'],
+    ['k', 'l'],
+    ['o', 'n']
+]
+console.log(
+    undirectedPath(edges, 'j', 'o')
+)
