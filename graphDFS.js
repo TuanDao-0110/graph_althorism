@@ -21,6 +21,6 @@ const graph = {
     e: [],
     f: [],
 }
-
-
-depthFirstPrint(graph, 'a')
+console.log(
+    depthFirstPrint(graph, 'a')
+)
