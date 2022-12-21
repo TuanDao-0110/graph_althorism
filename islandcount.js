@@ -20,6 +20,8 @@ const isLandCount = (grid) => {
 }
 
 const explore = (grid, r, c, visited) => {
+    // check row bound/ col bound to make sure that we will not move futher or less
+    // than bounds
     const rowInBounds = 0 <= r && r < grid.length
     const colInBound = 0 <= c && c < grid[0].length
     if (!rowInBounds || !colInBound) return false
