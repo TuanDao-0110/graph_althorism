@@ -1,35 +1,52 @@
-const graph = {
-    0: ['8', '1', '5'],
-    1: ['0'],
-    5: ['0', '8'],
-    8: ['0', '5'],
-    2: ['3', '4'],
-    3: ['2', '4'],
-    4: ['3', '2'],
-} // largest component = 4
+const edges = [
+    ['w', 'x'],
+    ['x', 'y'],
+    ['z', 'y'],
+    ['z', 'v'],
+    ['w', 'v']
+] // shortest path =(edges,'w','z') = 2 
 
-const largestComponent = (graph) => {
+const shortestPath = (edges, nodeA, NodeB) => {
+    const graph = buildGraph(edges)
+    // create visited list --> to make sure that graph travesal not go back
     const visited = new Set()
-    let longest = 0
-    for (let node in graph) {
-        const size = exploreSize(graph, node, visited)
-        if (size > longest) {
-            longest = size
+    visited.add(nodeA)
+    // let queue with node and distance
+    let queue = [[nodeA, 0]]
+    while (queue.length > 0) {
+        console.log(queue)
+        // take 1st out of the queue
+        const [node, distance] = queue.shift()
+
+        // check if that node === NodeB
+        if (node === NodeB) {
+            // return incase node === nodeB
+            return distance
+        }
+        // if not keep push 2 new unvisited neighbor  vs add distance 
+        for (let neighbor of graph[node]) {
+            if (!visited.has(neighbor)) {
+                queue.push([neighbor, distance + 1])
+            }
         }
     }
-    return longest
 }
 
-const exploreSize = (graph, node, visited) => {
-    if (visited.has((node))) return 0;
-    // represent current node
-    visited.add(node)
-    let size = 1;
-    for (let neighbor of graph[node]) {
-        size += exploreSize(graph, neighbor, visited)
+const buildGraph = (edges) => {
+    const graph = {}
+
+    for (let edge of edges) {
+        const [a, b] = edge
+        if (!(a in graph)) {
+            graph[a] = []
+        }
+        graph[a].push(b)
+        if (!(b in graph)) {
+            graph[b] = []
+        }
+        graph[b].push(a)
     }
-    return size
+    return graph
 }
-console.log(
-    largestComponent(graph)
-)
+
+console.log(shortestPath(edges, 'w', 'z'))
