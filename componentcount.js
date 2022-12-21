@@ -1,3 +1,4 @@
+// check how many connect node in graph
 const connectedComponentsCount = (graph) => {
     const visited = new Set()
     let count = 0
